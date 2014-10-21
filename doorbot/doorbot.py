@@ -1,12 +1,10 @@
 from flask import Flask, Response, request
-from flask_sslify import SSLify
 from flask.ext.httpauth import HTTPBasicAuth
 from logbook import Logger
 import json
 import os.path
 
 app = Flask(__name__)
-sslify = SSLify(app)
 auth = HTTPBasicAuth()
 app.log = Logger(__name__)
 
