@@ -11,6 +11,9 @@ app.log = Logger(__name__)
 user_db = json.load(
     open(os.path.expanduser("~/.doorbot_users"), 'r')
 )
+config_settings = json.load(
+    open(os.path.expanduser("~/.doorbot_config"), 'r')
+)
 
 @auth.get_password
 def get_pw(username):
@@ -18,19 +21,7 @@ def get_pw(username):
         return user_db.get(username)
     return None
 
-config_settings = {
-    'doors':[
-        {'door_name':"Front Door",
-         'doorid':"front",
-        'interface': "piface",
-        'interfaceopt':0},
 
-        {'door_name':"Back Door",
-         'doorid':"back",
-        'interface': "piface",
-        'interfaceopt':1},
-    ]
-}
 
 import interfaces
 app.doors = { 
