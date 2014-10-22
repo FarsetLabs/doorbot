@@ -1,9 +1,8 @@
-python-package-boilerplate
+Doorbot
+
 ==========================
 
-[![Build Status](https://travis-ci.org/mtchavez/python-package-boilerplate.png?branch=master)](https://travis-ci.org/mtchavez/python-package-boilerplate)
-
-Boilerplate for a Python Package
+Doorbot Package for Farset Labs
 
 ## Package
 
