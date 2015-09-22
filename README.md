@@ -41,7 +41,7 @@ Then, enable the site with `sudo a2ensite Doorbot.apache.conf; sudo service apac
 
 ## Configuration
 
-Doorbot is configured using two JSON dotfiles in the operating-users home directory (`/home/username`, depending on usecase)
+Doorbot is configured using two JSON dotfiles in the operating-users home directory (`/var/www/` for default apache config)
 
 ### `.doorbot_users`
 
@@ -94,7 +94,7 @@ Currently Authenticated but doesn't need to be; returns a list of the doorids
 
 Inside the enclosure above the network rack in the co-working space, the piface as as wired up as it needs to be for the foreseeable.
 
-**IF ANYONE WANTS TO INTERFACE WITH OR EVEN CONSIDER OPENING THE ENCLOSURE, WRITTEN DIRECTOR CONFIRMATION IS REQUIRED IN ADVANCE AND THE ENCLOSURE MUST BE RESEALED BY A DIRECTOR OR NEM AFTERWARDS**
+**IF ANYONE WANTS TO INTERFACE WITH OR EVEN CONSIDER OPENING THE ENCLOSURE, RECORDED DIRECTOR CONFIRMATION IS REQUIRED IN ADVANCE AND THE ENCLOSURE MUST BE RESEALED BY A DIRECTOR OR DI NEM AFTERWARDS**
 
 There are 12 interface lines wired up to the terminal strip in the top lid of the enclosure; they are split into two 'sectors' of 6, which represent the two proposed 'door' controls, with the front door on the 'left' and the currently unpopulated back door on the right.
 

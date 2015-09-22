@@ -154,6 +154,10 @@ class PiFace(Logging_MixIn):
 
         super(PiFace, self).__init__(*args, **kwargs)
         self.open_time = "Never"
+        try:
+            import pifacedigitalio
+        except ImportError:
+            raise ImportWarning("No PiFaceDigitalIO Module, Cannot instantiate PiFace")
         self.pfd = pifacedigitalio.PiFaceDigital()
         self.relay = kwargs.get('interfaceopt',0)
         self.log.warn("Got Config {}".format(kwargs))

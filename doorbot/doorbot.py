@@ -21,12 +21,8 @@ def get_pw(username):
         return user_db.get(username)
     return None
 
-
-
-
-
 import interfaces
-app.doors = { 
+app.doors = {
     door_config['doorid']:interfaces.pick(
         door_config['interface']
     )(**door_config) for door_config in config_settings['doors']
