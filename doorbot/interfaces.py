@@ -1,4 +1,5 @@
 import time
+from doorbot import app
 
 def pick(choice):
     """
@@ -7,10 +8,16 @@ def pick(choice):
     :return:
     """
 
-    return {
+    candidate_cls = {
         'dummy': Dummy,
         'piface':PiFace
     }.get(choice)
+    try:
+        candidate_cls.import_prerequisites()
+        return candidate_cls
+    except ImportWarning as e:
+        app.log.error("Prequsite Failed, loading dummy interface: {}".format(e))
+        return Dummy
 
 
 class Abstract_Interface(object):
@@ -67,6 +74,12 @@ class Abstract_Interface(object):
 
         return("{type}(door_name=\"{door_name}\")".format(door_name=self.door_name, type=self.__class__.__name_))
 
+    @classmethod
+    def import_prerequisites(cls):
+        """
+        Lay the ground work
+        """
+        pass
 
 class Logging_MixIn(Abstract_Interface):
     """
@@ -138,10 +151,6 @@ class PiFace(Logging_MixIn):
     open_time = None
 
     def __init__(self, *args, **kwargs):
-        try:
-            import pifacedigitalio
-        except ImportError:
-            raise ImportWarning("No PiFaceDigitalIO Module, Cannot instantiate PiFace")
 
         super(PiFace, self).__init__(*args, **kwargs)
         self.open_time = "Never"
@@ -181,3 +190,14 @@ class PiFace(Logging_MixIn):
         """
 
         return("{type}(door_name=\"{door_name}\", open={status}, open_time={open_time}, relay={relay})".format(door_name=self.door_name, type=self.__class__.__name__, status=self.is_open(), relay=self.relay, open_time=self.open_time))
+
+    @classmethod
+    def import_prerequisites(cls):
+        """
+        Lay the ground work
+        """
+        try:
+            import pifacedigitalio
+        except ImportError:
+            raise ImportWarning("No PiFaceDigitalIO Module, Cannot instantiate PiFace")
+
