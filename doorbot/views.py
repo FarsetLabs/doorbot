@@ -1,5 +1,4 @@
 from doorbot import app, auth
-from jsonify import jsonify as jsondecorate
 from flask import jsonify, Response
 
 @app.route('/')
@@ -12,7 +11,7 @@ def bad_open():
     app.log.warn("Invalid Door Open Action by {user}".format(
         user=auth.username()
     ))
-    return Response("Please use a valid doorid ({})".format(app.doors.keys()))
+    return jsonify(action='open', option=doorid, status=False, msg="Invalid Door or User", user=auth.username())
 
 @app.route('/open/<doorid>')
 @auth.login_required
@@ -32,9 +31,9 @@ def open(doorid):
         user=auth.username(),
         response=response
     ))
-    return Response(response)
+    return jsonify(action='open', option=doorid, status=bool(status), msg=response, user=auth.username())
 
 @app.route('/status')
 @auth.login_required
 def status():
-    return Response("Hello {}: The door config is {}".format(auth.username(),app.doors))
+    return jsonify(action='status', option=None, status=None, msg=repr(app.doors) , user=auth.username())

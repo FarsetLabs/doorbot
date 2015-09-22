@@ -59,6 +59,15 @@ class Abstract_Interface(object):
         """
         return None
 
+    def __repr__(self):
+        """
+        Basic String Representation
+        :return: str
+        """
+
+        return("{type}(door_name=\"{door_name}\")".format(door_name=self.door_name, type=self.__class__.__name_))
+
+
 class Logging_MixIn(Abstract_Interface):
     """
     Logging Version
@@ -83,6 +92,7 @@ class Logging_MixIn(Abstract_Interface):
 
     def open(self, duration=10):
         self.log.info("Opening for {}".format(duration))
+
 
 class Dummy(Logging_MixIn):
     open_status = False
@@ -111,10 +121,18 @@ class Dummy(Logging_MixIn):
             self.log.warn("Door already open")
             return (None, "Door already open for {}s".format(time.time()-self.open_time))
 
-
-
     def is_open(self):
         return self.open_status
+
+    def __repr__(self):
+        """
+        Basic String Representation
+        :return: str
+        """
+
+        return("{type}(door_name=\"{door_name}\", open={status}, open_time={open_time})".format(door_name=self.door_name, type=self.__class__.__name__, status=self.is_open(), open_time=self.open_time))
+
+
 class PiFace(Logging_MixIn):
     pfd = None
     open_time = None
@@ -126,6 +144,7 @@ class PiFace(Logging_MixIn):
             raise ImportWarning("No PiFaceDigitalIO Module, Cannot instantiate PiFace")
 
         super(PiFace, self).__init__(*args, **kwargs)
+        self.open_time = "Never"
         self.pfd = pifacedigitalio.PiFaceDigital()
         self.relay = kwargs.get('interfaceopt',0)
         self.log.warn("Got Config {}".format(kwargs))
@@ -155,4 +174,10 @@ class PiFace(Logging_MixIn):
     def is_open(self, door=0):
         return self.pfd.relays[door].value
 
-    
+    def __repr__(self):
+        """
+        Basic String Representation
+        :return: str
+        """
+
+        return("{type}(door_name=\"{door_name}\", open={status}, open_time={open_time}, relay={relay})".format(door_name=self.door_name, type=self.__class__.__name__, status=self.is_open(), relay=self.relay, open_time=self.open_time))

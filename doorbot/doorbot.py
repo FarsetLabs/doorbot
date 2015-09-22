@@ -32,6 +32,8 @@ config_settings = {
     ]
 }
 
+
+
 import interfaces
 app.doors = { 
     door_config['doorid']:interfaces.pick(
