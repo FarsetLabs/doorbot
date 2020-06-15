@@ -1,23 +1,5 @@
 import time
-from doorbot import app
-
-def pick(choice):
-    """
-    Select and return an interface definition
-    :param choice:
-    :return:
-    """
-
-    candidate_cls = {
-        'dummy': Dummy,
-        'piface':PiFace
-    }.get(choice)
-    try:
-        candidate_cls.import_prerequisites()
-        return candidate_cls
-    except ImportWarning as e:
-        app.log.error("Prequsite Failed, loading dummy interface: {}".format(e))
-        return Dummy
+import logging
 
 
 class Abstract_Interface(object):
@@ -93,8 +75,7 @@ class Logging_MixIn(Abstract_Interface):
         :return:
         """
         Abstract_Interface.__init__(self, *args, **kwargs)
-        from logbook import Logger
-        self.log = Logger("{}-{}".format(type(self).__name__,self.door_name))
+        self.log = logging.getLogger("{}-{}".format(type(self).__name__,self.door_name))
         self.log.debug("Initialised using : {}".format(kwargs))
 
     def activate(self):
@@ -106,7 +87,6 @@ class Logging_MixIn(Abstract_Interface):
     def open(self, duration=10):
         self.log.info("Opening for {}".format(duration))
 
-
 class Dummy(Logging_MixIn):
     open_status = False
     open_time = time.time()
@@ -114,7 +94,7 @@ class Dummy(Logging_MixIn):
         super(Dummy, self).is_active()
         return (True,True)
 
-    def open(self, duration=10):
+    def open(self, duration=0):
         """
         True on success, False on Exception (not implemented), None on 'double jeopardy'
         """
@@ -144,7 +124,6 @@ class Dummy(Logging_MixIn):
         """
 
         return("{type}(door_name=\"{door_name}\", open={status}, open_time={open_time})".format(door_name=self.door_name, type=self.__class__.__name__, status=self.is_open(), open_time=self.open_time))
-
 
 class PiFace(Logging_MixIn):
     pfd = None
@@ -204,4 +183,5 @@ class PiFace(Logging_MixIn):
             import pifacedigitalio
         except ImportError:
             raise ImportWarning("No PiFaceDigitalIO Module, Cannot instantiate PiFace")
+
 
