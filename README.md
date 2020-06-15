@@ -41,7 +41,7 @@ Then, enable the site with `sudo a2ensite Doorbot.apache.conf; sudo service apac
 
 ## Configuration
 
-Doorbot is configured using two JSON dotfiles in the operating-users home directory (`/var/www/` for default apache config)
+Doorbot is configured using three JSON dotfiles in the operating-users home directory (`/var/www/` for default apache config)
 
 ### `.doorbot_users`
 
@@ -60,6 +60,8 @@ Multiple doors can be configured based on the available interfaces. There is als
 
 In the case of the `piface` interface, the `interfaceopt` is the output port which triggers the doors opening/unlocking.
 
+For 'doors' that are just 'virtual endpoints' and not locally connected to the doorbot server, use the `dummy` interface
+
   {
       'doors':[
           {'door_name':"Front Door",
@@ -67,12 +69,39 @@ In the case of the `piface` interface, the `interfaceopt` is the output port whi
           'interface': "piface",
           'interfaceopt':0},
 
-          {'door_name':"Back Door",
-           'doorid':"back",
-          'interface': "piface",
-          'interfaceopt':1},
+          {'door_name':"Workshop",
+           'doorid':"<device_id>",
+           'interface': "dummy"
+          },
       ]
   }
+  
+### `.doorbot_cards`
+
+This file defines the ID card authentication method (i.e. BasicAuth where the 'username' is the device id and the 'password' is an ID string from a RFID card or similar
+
+  {
+    "Default":[
+      "IDSTRING",
+      ...
+      "IDSTRINGN"
+    ],
+    "Workshop":[
+      "TRAINEDIDS"
+    ],
+    "Pod Space":[
+       "SPECIALIDS"
+    ]
+    
+  }
+  
+  
+## Authentication Schema
+
+'Authentication' is currently handled by BasicAuth, and there are two 'verification' methods;
+
+1. Standard Username:Password from the `.doorbot_users` file, which have access to *all* 'doors'
+2. <device_id>:<card_id> defined between the `.doorbot_config` and `.dootbot_cards` files.
 
 ## API Routes
 
