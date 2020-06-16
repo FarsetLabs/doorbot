@@ -47,7 +47,7 @@ Doorbot is configured using three JSON dotfiles in the operating-users home dire
 
 Contains authentication information of the form:
 
-  { "username": "PassWord", "otheruser":"otherPass" }
+      { "username": "PassWord", "otheruser":"otherPass" }
 
 These are 'authorised accounts' that can perform admin tasks, specifically opening the doors.
 
@@ -62,38 +62,38 @@ In the case of the `piface` interface, the `interfaceopt` is the output port whi
 
 For 'doors' that are just 'virtual endpoints' and not locally connected to the doorbot server, use the `dummy` interface
 
-  {
-      'doors':[
-          {'door_name':"Front Door",
-           'doorid':"front",
-          'interface': "piface",
-          'interfaceopt':0},
-
-          {'door_name':"Workshop",
-           'doorid':"<device_id>",
-           'interface': "dummy"
-          },
-      ]
-  }
+      {
+          'doors':[
+              {'door_name':"Front Door",
+               'doorid':"front",
+              'interface': "piface",
+              'interfaceopt':0},
+    
+              {'door_name':"Workshop",
+               'doorid':"<device_id>",
+               'interface': "dummy"
+              },
+          ]
+      }
   
 ### `.doorbot_cards`
 
 This file defines the ID card authentication method (i.e. BasicAuth where the 'username' is the device id and the 'password' is an ID string from a RFID card or similar
 
-  {
-    "Default":[
-      "IDSTRING",
-      ...
-      "IDSTRINGN"
-    ],
-    "Workshop":[
-      "TRAINEDIDS"
-    ],
-    "Pod Space":[
-       "SPECIALIDS"
-    ]
-    
-  }
+      {
+        "Default":[
+          "IDSTRING",
+          ...
+          "IDSTRINGN"
+        ],
+        "Workshop":[
+          "TRAINEDIDS"
+        ],
+        "Pod Space":[
+           "SPECIALIDS"
+        ]
+        
+      }
   
   
 ## Authentication Schema
