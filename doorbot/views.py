@@ -1,23 +1,27 @@
-from doorbot.app import app, auth
-from flask import jsonify, Response, Request
 import logging
+
+from flask import jsonify, Response
+
+from doorbot.app import app, auth
+
 
 @app.route('/')
 def base():
     return Response("Hello World")
 
+
 @app.route('/open')
 @auth.login_required
-def bad_open():
+def open_base():
     app.log.warn("Invalid Door Open Action by {user}".format(
         user=auth.username()
     ))
     return jsonify(action='open', option='', status=False, msg="Invalid Door or User", user=auth.username())
 
+
 @app.route('/open/<doorid>')
 @auth.login_required
-def open(doorid):
-
+def open_door(doorid):
     if doorid not in app.doors.keys():
         return jsonify(action='open', option=doorid, status=False, msg="Invalid Door", user=auth.username())
 
@@ -35,7 +39,8 @@ def open(doorid):
     ))
     return jsonify(action='open', option=doorid, status=bool(status), msg=response, user=auth.username())
 
+
 @app.route('/status')
 @auth.login_required
 def status():
-    return jsonify(action='status', option=None, status=None, msg=repr(app.doors) , user=auth.username())
+    return jsonify(action='status', option=None, status=None, msg=repr(app.doors), user=auth.username())

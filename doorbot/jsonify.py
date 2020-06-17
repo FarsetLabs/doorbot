@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
-try:
-    from json import dumps
-except ImportError:
-    from simplejson import dumps
+from functools import wraps, partial
+from json import dumps
 
 from flask import Response
-from functools import wraps, partial
 
 
 def jsonify(method=None, cls=None):
-
     if method is None:
         return partial(jsonify, cls=cls)
 
@@ -40,6 +36,8 @@ def jsonify(method=None, cls=None):
 
 class JSONStatusResponse(object):
 
-    def __init__(self, status_code=200, body={}):
+    def __init__(self, status_code=200, body=None):
+        if body is None:
+            body = {}
         self.status_code = status_code
-        self.body = body;
+        self.body = body

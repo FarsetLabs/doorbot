@@ -1,11 +1,11 @@
-from flask import Flask, Response, request
-from flask.ext.httpauth import HTTPBasicAuth
+import json
 import logging
+import os.path
+
+from flask import Flask
+from flask.ext.httpauth import HTTPBasicAuth
 
 from interfaces import Dummy, PiFace
-
-import json
-import os.path
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -40,13 +40,15 @@ def pick_interface(choice):
         logging.error("Prequsite Failed, loading dummy interface: {}".format(e))
         return Dummy
 
+
 app.doors = {
-    door_config['door_id']:pick_interface(
+    door_config['door_id']: pick_interface(
         door_config['interface']
     )(**door_config) for door_config in config_settings['doors']
 }
 
 logging.debug("Got Doors: {} from Config {}".format(app.doors, config_settings))
+
 
 @auth.verify_password
 def verify(username, password):
@@ -61,4 +63,3 @@ def verify(username, password):
         if door_group in card_db:
             return password in card_db[door_group]
     return False
-

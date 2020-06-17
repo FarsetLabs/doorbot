@@ -1,17 +1,26 @@
-import setuptools
-from packagename.version import Version
+"""The setup script."""
 
+from setuptools import setup, find_packages
 
-setuptools.setup(name='pytest-cov',
-                 version=Version('1.0.0').number,
-                 description='Python Package Boilerplate',
-                 long_description=open('README.md').read().strip(),
-                 author='Andrew Bolster',
-                 author_email='me@andrewbolster.info',
-                 url='https://github.com/FarsetLabs/doorbot',
-                 py_modules=['doorbot'],
-                 install_requires=[],
-                 license='MIT License',
-                 zip_safe=False,
-                 keywords='boilerplate package',
-                 classifiers=['Packages', 'Boilerplate'])
+with open('README.md') as readme_file:
+    readme = readme_file.read()
+
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
+
+requirements = ['flask', 'flask_sslify', 'flask_httpauth']
+
+setup(name='doorbot',
+      version="1.0.1",
+      description='Python Package Boilerplate',
+      long_description=readme + '\n\n' + history,
+      long_description_content_type='text/markdown',
+      author='Andrew Bolster',
+      author_email='bolster@farsetlabs.org.uk',
+      url='https://github.com/FarsetLabs/doorbot',
+      packages=find_packages(include=['doorbot', 'doorbot.*']),
+      install_requires=requirements,
+      license='MIT License',
+      zip_safe=False,
+      keywords='access control, hackerspace',
+      classifiers=['Packages', 'Boilerplate'])
