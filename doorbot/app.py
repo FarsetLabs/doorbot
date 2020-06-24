@@ -4,12 +4,26 @@ import os.path
 
 from flask import Flask
 from flask.ext.httpauth import HTTPBasicAuth
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_login import LoginManager
 
 from interfaces import Dummy, PiFace
+from config import Config
+
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
+app.config.from_object(Config)
 auth = HTTPBasicAuth()
-logging.basicConfig(level=logging.DEBUG)
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_message = "You must be logged in to access this page."
+login_manager.login_view = "auth.login"
 
 user_db = json.load(
     open(os.path.expanduser("~/.doorbot_users"), 'r')
